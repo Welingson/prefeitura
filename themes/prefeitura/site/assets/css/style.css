@@ -1,0 +1,1182 @@
+/* stylelint-disable selector-list-comma-newline-after */
+
+/* FONTES DO GOOGLE FONTES */
+@import url('https://fonts.googleapis.com/css?family=Anton|Bitter|Bree+Serif|Cabin|Francois+One|Teko&display=swap|Roboto&display=swap|Open+Sans&display=swap');
+
+h1, h2, h3, h4, h5, h6 {
+    /*font-family: Tahoma, Geneva, sans-serif, Arial, Helvetica, sans-serif;*/
+    font-family: system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,Noto Sans,sans-serif,BlinkMacSystemFont,Helvetica Neue,Arial,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol,Noto Color Emoji;
+}
+
+
+
+/* HEADER */
+.container-fluid{
+    padding-right: unset;
+    padding-left: unset;
+}
+
+.blog-header {
+    padding-top: 20px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #e5e5e5;
+    background-color: #07539c;
+}
+
+.blog-header>a{
+    color: white;
+    text-decoration: none;
+}
+
+.blog-header>a>h1{
+    font-size: 30px;
+    text-decoration: none;
+}
+
+.blog-header-logo {
+    font-family: 'Roboto', sans-serif;
+    font-size: 1.5rem;
+    font-weight: 700;
+}
+
+#logo-brazopolis{
+    height: 150px;
+    width: 170px;
+}
+
+.search-on-site{
+    z-index: unset !important;
+}
+
+@media(max-width: 240px){
+    .prefeitura-titulo>h2{
+        text-align: center;
+        font-size: 20px;
+    }
+
+    .prefeitura-titulo>h4{
+        font-size: 20px;
+    }
+}
+
+@media(max-width: 411px) {
+    .prefeitura-titulo>h4{
+        text-align: center;
+    }
+
+}
+
+@media(min-width: 768px){
+    .prefeitura-titulo>h4{
+        font-size: 19px;
+    }
+
+    .prefeitura-titulo>h2{
+        font-size: 19px;
+    }
+}
+
+@media(min-width: 992px){
+    .prefeitura-titulo>h4{
+        font-size: 22px;
+    }
+
+    .prefeitura-titulo>h2{
+        font-size: 24px;
+    }
+}
+
+
+
+
+/* MENU */
+
+.menu{
+    background-color: #07539c;
+}
+
+
+.menu-item{
+    font-family: 'Roboto', sans-serif;
+}
+
+.menu-item:hover{
+    border-radius: 3px;
+    background-color: #2979FF;
+
+}
+
+.dropdown-menu{
+    background-color: #07539c;
+}
+
+.dropdown-item{
+    color: white;
+}
+
+.dropdown-item:hover{
+    background-color: white;
+}
+
+.blog-header-logo:hover {
+    text-decoration: none;
+}
+
+
+/* BANNERS */
+
+@media(min-width: 320px){
+    .banner-slide{
+        height: 200px !important;
+    }
+}
+
+
+@media(min-width: 360px){
+    .banner-slide{
+    height: 200px !important;
+    }
+}
+
+@media(min-width: 768px){
+    .banner-slide{
+        height: 100% !important;
+    }    
+}
+
+
+/* LINK DE NOTICIAS */
+.external-link-notice{
+    font-weight: 600;
+    color: white;
+    font-family: "Playfair Display", Georgia, "Times New Roman", serif;
+    background-color: #07539c;
+}
+
+.external-link-notice:hover{
+    border: 1px solid #07539c;
+    background-color: white;
+    color: #07539c;
+}
+
+/* CARD DE LINKS DE ACESSO RÁPIDO */
+.card-acesso-rapido{
+    background-color: #07539c;
+}
+
+.card-link-acesso-rapido{
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    flex-wrap: wrap;
+
+}
+
+.card-link-acesso-rapido>a{
+    -webkit-transition: 0.2s;
+    transition: 0.2s;
+    border-radius: 7px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin: 10px;
+    width: 200px;
+    height: 200px;
+}
+.card-link-acesso-rapido>a:hover{
+    text-decoration: none;
+    box-shadow: 0px 0px 8px 6px rgba(45,86,189,0.25);
+
+}
+
+
+.card-link-acesso-rapido>a>i{
+    color: #07539c;
+    font-size: 70px;
+    margin-bottom: 5px;
+}
+
+.card-link-acesso-rapido>a>p{
+    font-weight: 700;
+    color: #07539c;
+    font-family: monospace;
+}
+
+
+@media(min-width: 320px){
+    .card-link-acesso-rapido>a{
+        width: 100px;
+        height: 100px;
+       
+    }
+
+    .card-link-acesso-rapido>a>p{
+        font-size: 12px;
+    }
+
+    .card-link-acesso-rapido>a>i{
+        font-size: 30px;
+    }
+}
+
+@media(min-width: 375px){
+    .card-link-acesso-rapido>a{
+        width: 120px;
+        height: 120px;
+    }
+
+    .card-link-acesso-rapido>a>p{
+        font-size: 15px;
+    }
+
+    .card-link-acesso-rapido>a>i{
+        font-size: 35px;
+    }
+}
+
+@media(min-width: 768px){
+    .card-link-acesso-rapido>a{
+        width: 150px;
+        height: 150px;
+    }
+
+    .card-link-acesso-rapido>a>p{
+        font-size: 17px;
+    }
+
+    .card-link-acesso-rapido>a>i{
+        font-size: 70px;
+    }
+}
+
+@media(min-width: 992px){
+    .card-link-acesso-rapido>a{
+        width: 200px;
+        height: 200px;
+    }
+}
+
+
+/* CARD DOCUMENTOS */
+.card-documentos{
+    background-color: brown;
+}
+
+#accordion-documents>div>div{
+    padding: unset;
+}
+
+
+.card-link-documentos{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    max-height: 230px;
+    overflow-y: scroll;
+
+
+}
+
+.card-link-documentos::-webkit-scrollbar{
+    width: 10px;
+}
+
+.card-link-documentos::-webkit-scrollbar-thumb{
+    background: brown;
+
+}
+
+.card-link-documentos::-webkit-scrollbar-track{
+    background: lightgray;
+}
+
+.card-link-documentos>a{
+    -webkit-transition: 0.2s;
+    transition: 0.2s;
+    text-decoration: none;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    background-color: lightgray;
+    color: brown;
+    height: 50px;
+    padding: 20px;
+    margin: 10px;
+
+}
+
+.card-link-documentos>a>i>span{
+    font-family: monospace;
+
+}
+
+.card-link-documentos>a:hover{
+    color: #fff;
+    background-color: brown;
+
+}
+
+/* SECAO GESTÃO */
+
+.secao-gestao{
+    /* border: 1px solid blue; */
+    display: flex;
+    /* justify-content: center; */
+    flex-wrap: nowrap;
+    /*overflow-x: scroll;*/
+    /* scroll-behavior: smooth; */
+    /* transition: 0.10s; */
+
+}
+
+#title-gestao{
+    font-size: 2.9rem;
+    font-family: monospace;
+}
+
+.secao-gestao>.card-gestao{
+    display: flex;
+    background-color: lightgray;
+    margin: 10px;
+    border-radius: 5px;
+    padding: 10px;
+
+}
+
+.secao-gestao>.card-gestao>.card-gestao-image{
+    width: 200px;
+    max-height: 100%;
+    padding-right: 10px;
+}
+
+.secao-gestao>.card-gestao>.card-gestao-image>img{
+    height: 100%;
+    width: 100%;
+    border-radius: 5px;
+
+}
+
+.secao-gestao>.card-gestao>.card-gestao-info{
+    margin-top: 20px;
+    width: 200px;
+    height: 150px;
+}
+
+.secao-gestao>.card-gestao>.card-gestao-info>h6{
+    font-family: monospace;
+    font-size: 20px;
+    font-weight: 600 !important;
+}
+
+.secao-gestao>.card-gestao>.card-gestao-info>p{
+
+    font-weight: 600;
+    color: #07539c;
+}
+
+.secao-gestao>.card-gestao>.card-gestao-info>a{
+    font-weight: 600;
+    font-family: monospace;
+    font-size: 15px;
+}
+
+.secao-gestao>.card-gestao>.card-gestao-info>h6::after{
+    content: "";
+    width: 100%;
+    height: 2px;
+    background: #07539c;
+    display: block;
+}
+
+#see-more>a{
+    /* pointer-events: painted; */
+    cursor: pointer;
+    font-size: 50px;
+    /* width: 100px; */
+    /* border-radius: 100%; */
+}
+
+.secao-gestao{
+    overflow-x: auto;
+}
+
+
+.secao-gestao::-webkit-scrollbar{
+    width: 5px;
+    height: 10px;
+}
+
+.secao-gestao::-webkit-scrollbar-thumb{
+    background: #07539c;
+    border-radius: 5px;
+}
+
+.secao-gestao::-webkit-scrollbar-track{
+    background: lightgray;
+    border-radius: 5px;
+}
+
+
+@media (min-width: 768px) {
+    .display-4 {
+        font-size: 3rem;
+    }
+}
+
+a{
+    font-size: 17px;
+    font-family: 'Roboto', sans-serif;
+}
+
+@media(max-width: 414px){
+    .card-gestao{
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: center;
+        height: 350px;
+    }
+
+    .secao-gestao{
+        overflow-y: hidden;
+    }
+
+    .card-gestao-info{
+        text-align: center;
+    }
+
+}
+
+@media(min-width: 768px){
+    .secao-gestao{
+        justify-content: center;
+    }
+
+}
+
+
+.carousel-item>img{
+    width: 100%;
+    height: 400px;
+
+}
+
+.card-img-right {
+    height: 100%;
+    border-radius: 0 3px 3px 0;
+}
+
+
+.h-250 { height: 250px; }
+
+@media (min-width: 768px) {
+    .h-md-250 { height: 250px; }
+}
+
+
+
+/* FOOTER */
+
+footer{
+    
+    /* padding: 2.5rem 0; */
+    /* padding-bottom: 5rem; */
+    /* color: #999; */
+    /* text-align: center; */
+    background-color: #07539c;
+
+}
+
+.prefeitura-rodape{
+    text-align: center;
+}
+
+.prefeitura-rodape>p{
+    margin: unset;
+}
+
+.prefeitura-rodape>a{
+    text-decoration: none;
+    color: white;
+    
+}
+
+#google-maps-home{
+    width: 100%;
+    height: 250px;
+}
+
+.nav-list{
+    list-style: none;
+    padding-left: 20px;
+}
+
+.nav-list>li>a{
+    
+    cursor: pointer;
+    color: white;
+
+}
+
+
+.info-prefeitura{
+    font-size: 18px;
+    /* font-family: "Playfair Display", Georgia, "Times New Roman", serif; */
+    font-weight: 500;
+}
+
+/*LICITAÇÃO*/
+.section-bidding{
+    border-bottom: #07539c solid 1px;
+
+}
+
+.section-bidding-list i{
+    color: #07539c;
+}
+
+.bidding-process{
+    margin-bottom: unset;
+}
+
+
+/* GESTÃO */
+.section-gestao-title{
+    border-bottom: #07539c solid 1px;
+
+}
+
+.section-gestao-title div h1 i{
+    color: #07539c;
+}
+
+
+/* NOTICE LIST */
+.section-notice{
+    border-bottom: #07539c solid 1px;
+
+}
+
+.section-notice div h1 i{
+    color: #07539c;
+}
+
+
+/*CARDS */
+
+.btn-outline-purple{
+    color: #07539c;
+    border-color: #07539c;
+
+}
+
+.btn-outline-purple:hover{
+    color: white;
+    background-color: #07539c;
+}
+
+.notice-category{
+    padding: 3px;
+    color: white;
+    background-color: #07539c;
+    font-weight: 700;
+    position: absolute;
+    border-radius: 0px 0px 5px 0px;
+
+}
+
+/* NOTICE PAGE */
+
+@media(min-width: 240px){
+    .news-title{
+        text-align: center;
+        font-size: 30px;
+        
+    }
+    .page-title{
+        justify-content: center !important;
+       
+    }
+}
+
+
+@media(min-width: 320px){
+    .news-title{
+        text-align: center;
+        font-size: 30px;
+        
+    }
+    .page-title{
+        justify-content: center !important;
+       
+    }
+}
+
+@media(min-width: 768px){
+    .news-title{
+        text-align: center;
+        font-size: 40px;
+        
+    }
+    .page-title{
+        justify-content: space-between !important;
+        align-items: end;
+    }
+}
+
+
+/* NOTICE IFRAME */
+
+.iframe{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.iframe-news> iframe{
+    width: 350px;
+    height: 197px;
+}
+
+@media(min-width: 240px){
+    .iframe-news>iframe {
+        margin: 10px;
+        width: 220px;
+        
+    }
+}
+
+@media (min-width: 320px) {
+    .iframe-news>iframe {
+        /* text-align: center; */
+        margin: 10px;
+        width: 270px;
+
+     }
+}
+
+@media (min-width: 375px) {
+    .iframe-news>iframe {
+        /* text-align: center; */
+        margin: 10px;
+        width: 330px;
+     }
+}
+
+@media (min-width: 425px) {
+    .iframe-news>iframe {
+        /* text-align: center; */
+        margin: 10px;
+        width: 380px;
+     }
+}
+
+@media (min-width: 768px) {
+    .iframe-news>iframe {
+        /* text-align: center; */
+        margin: 10px;
+        width: 320px;
+     }
+}
+
+@media (min-width: 769px) {
+    .iframe-news>iframe {
+        /* text-align: center; */
+        margin: 10px;
+        width: 380px;
+     }
+}
+
+
+
+/* NEWS IMAGE GALLERY */
+
+.news-image{
+    cursor: pointer;
+    transition: 0.5s;
+    overflow: hidden;
+    /* box-shadow: 0px 0px 8px 6px rgba(45,86,189,0.25) */
+}
+
+.news-image>img{
+    position:initial;
+    transition: 1s;
+}
+
+.news-image:hover>img{
+
+    transform: scale(1.4);
+
+    box-shadow: 0px 0px 5px 6px rgba(45,86,189,0.25);
+}
+
+.image-gallery{
+    width: 250px;
+    height: 250px;
+}
+
+@media(min-width: 240px){
+    .image-gallery{
+        width: 70px;
+        height: 70px;
+    }
+}
+
+@media(min-width: 320px){
+    .image-gallery{
+        width: 125px;
+        height: 125px;
+    }
+}
+
+@media(min-width: 360px){
+    .image-gallery{
+        width: 140px;
+        height: 140px;
+    }
+}
+
+@media(min-width: 375px){
+    .image-gallery{
+        width: 150px;
+        height: 150px;
+    }
+}
+
+@media(min-width: 411px){
+    .image-gallery{
+        width: 150px;
+        height: 150px;
+    }
+}
+
+@media(min-width: 425px){
+    .image-gallery{
+        width: 100px;
+        height: 100px;
+    }
+}
+
+@media(min-width: 700px){
+    .image-gallery{
+        width: 210px;
+        height: 210px;
+    }
+}
+
+
+@media(min-width: 769px){
+    .image-gallery{
+        width: 250px;
+        height: 250px;
+    }
+}
+
+
+
+#myModal{
+    height: 100%;
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 2; /* Sit on top */
+    padding-top: 50px; /* Location of the box */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    background-color: rgba(0, 0, 0, 0.8);
+    overflow: auto;
+
+}
+
+#modal-image{
+    width: 750px;
+    height: 400px;
+    overflow: auto;
+}
+
+#image-list{
+   
+    overflow-x: scroll;
+}
+
+.modal-image-open{
+    width: 250px;
+    height: 150px;
+    margin: 10px;
+    /* opacity: 0.5; */
+}
+
+.modal-image-open:hover{
+    opacity: 1;
+    cursor: pointer;
+}
+
+
+#image-list::-webkit-scrollbar{
+    width: 5px;
+    height: 10px;
+    
+}
+
+#image-list::-webkit-scrollbar-thumb{
+    background: #07539c;
+    border-radius: 5px;
+    
+
+}
+
+#image-list::-webkit-scrollbar-track{
+    border-radius: 5px;
+    background: lightgray;
+    
+}
+
+
+#close-modal{
+    color: white;
+    position: absolute;
+    top: 10px;
+    right: 25px;
+    font-size: 35px;
+    font-weight: bold;
+}
+
+#close-modal:hover,
+.close-modal:focus {
+  color: #000;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+
+/* GESTÃO LIST*/
+.section-gestao-title{
+    border-bottom: #07539c solid 1px;
+    
+}
+
+.section-gestao-title div h1 i{
+    color: #07539c;
+}
+
+
+.section-gestao-card{
+    box-shadow: 0px 0px 7px 2px lightgray;
+   
+}
+
+.section-gestao-card-list{
+    text-align: center;
+    margin-bottom: 40px;
+    
+}
+
+.section-gestao-card-list>a:hover{
+   background-color: white;
+   color: black;
+    
+}
+
+
+/* GESTAO MANAGER */
+
+#card-manager{
+    max-width: 700px;
+}
+
+
+/*MUNICIPIO*/
+
+#title-county{
+    font-family: Tahoma, Geneva, sans-serif, Arial, Helvetica, sans-serif;
+}
+
+@media (max-width: 320px) {
+    #title-county{
+        font-size: 25px;
+    }
+}
+
+#google-maps-municipio{
+    height: 300px;
+
+}
+
+
+/*MUNICIPIO SYMBOL*/
+
+
+#hino-brazopolis>div>h2{
+    color: #005cbf;
+}
+
+#hino{
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+}
+
+#symbol-image>div{
+    margin: 10px;
+}
+
+@media print {
+
+    body *{
+        visibility: hidden;
+    }
+
+
+    #hino-brazopolis, #hino-brazopolis *{
+        visibility: visible;
+    }
+
+    #hino-brazopolis{
+        position: absolute;
+        top: 0;
+
+    }
+
+}
+
+
+
+@media(max-width: 425px) {
+
+    #hino-brazopolis>div{
+        text-align: center;
+        justify-content: center !important;
+    }
+
+    #historia-brazopolis>div>h2{
+        font-size: 27px;
+    }
+
+
+    #symbol-image>div>img{
+        width: 250px;
+    }
+
+}
+
+@media(min-width: 768px) {
+    #symbol-image>div>img{
+        width: 300px;
+    }
+}
+
+
+/*MUNICIPIO HISTORIA*/
+
+#historia-brazopolis>div>h2{
+    color: #005cbf;
+}
+
+
+#historia-brazopolis>div>p{
+    font-family: inherit;
+    font-size: 17px;
+}
+
+@media(max-width: 425px){
+    #historia-brazopolis>div{
+        justify-content: center !important;
+        text-align: center;
+    }
+
+    #historia-brazopolis>div>h2{
+        font-size: 28px;
+
+    }
+
+}
+
+@media print {
+
+    body *{
+        visibility: hidden;
+    }
+
+
+    #historia-brazopolis, #historia-brazopolis *{
+        visibility: visible;
+    }
+
+    #historia-brazopolis{
+        position: absolute;
+        top: 0;
+
+    }
+
+}
+
+/*MUNICIPIO - TURISMO*/
+
+.parallax{
+    /*width: 100%;*/
+    height: 700px;
+}
+
+.parallax>div{
+    border-radius: 5px;
+    width: 900px;
+    padding: 70px;
+    background-color: rgba(0, 0, 0, 0.7);
+}
+
+.parallax>div>h2{
+    color: white;
+    font-weight: 700;
+}
+
+.parallax>div>p{
+    font-weight: 700;
+    color: white;
+    font-size: 17px;
+}
+
+#parallaxOne{
+    background-image: url("https://www.localhost/prefeitura/themes/prefeitura/site/assets/images/brazopolis.jpg");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+
+#brazopolis-info{
+    box-shadow: 0 0 0 5px #005cbf;
+    border-radius: 5px;
+}
+
+#brazopolis-info>p{
+    font-size: 18px;
+    font-family: monospace;
+}
+
+
+/*MUNICIPIO CULTURA*/
+
+#lista-patrimonio>ul>li{
+    font-family: Tahoma, Geneva, sans-serif, Arial, Helvetica, sans-serif;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+
+}
+
+#patrimonios{
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    
+}
+
+#patrimonios>a{
+    text-decoration: none;
+}
+
+
+#patrimonios>a>div{
+    margin: 10px;
+    /*padding: 20px;*/
+    width: 300px;
+    height: 250px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 0.5s;
+
+
+}
+
+#patrimonios>a>div:hover{
+    transform: scale(1.1);
+
+}
+
+#patrimonios>a>div>img{
+    border-radius: 5px;;
+}
+
+
+/*SPINNER DE CARREGAMENTO*/
+
+#spinner-load{
+    visibility: hidden;
+    height: 100%;
+    position: fixed; /* Stay in place */
+    z-index: 2;
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    background-color: rgba(0, 0, 0, 0.8);
+    overflow: auto;
+}
+
+#spinner-load>p{
+    margin-top: 10px;
+    color: white;
+    font-weight: bold;
+}
+
+#spinner-load>div{
+    width: 50px;
+    height: 50px;
+    font-size: 40px;
+}
+
+
+/*RESULTADO DE BUSCA*/
+#search-result{
+    margin-top: 150px;
+    margin-bottom: 150px;
+}
+
+@media(max-width: 320px){
+    #search-result{
+        margin: unset;
+    }
+}
+
+
+#notfound-result{
+    text-align: center;
+    margin-top: 100px;
+    margin-bottom: 150px;
+
+}
+
+#notfound-result>h3{
+    margin: unset;
+    text-align: center;
+    font-size: 25px;
+    font-weight: bold;
+    /*font-family: monospace;*/
+}
+
+#notfound-result>p{
+    margin: unset;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+#notfound-result>a{
+    font-size: 20px;
+    font-weight: bold;
+    padding: 15px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+#notfound-result>a:hover{
+    background-color: white;
+    color: #005cbf;
+
+}
+
+
+/*DEFAULT PAGINATOR*/
+
+
+
+
+
