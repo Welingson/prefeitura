@@ -28,7 +28,7 @@ $route->get("/", "Site@newspaper");
 $route->get("/{uri}", "Site@newspaperNews");
 $route->post("/buscar", "Site@newspaperSearch");
 //$route->get("/buscar/{search}/{page}", "Site@newspaperSearch");
-$route->get("/buscar/{search}/{dateOne}/{dateTwo}/{category}/{page}", "Site@newspaperSearch");
+$route->get("/buscar/{search}/{datePrevious}/{dateLater}/{category}/{page}", "Site@newspaperSearch");
 
 
 // LICITAÇÃO
@@ -38,7 +38,7 @@ $route->get("/p/{page}", "Site@bidding");
 $route->get("/{modality}", "Site@biddingModality");
 $route->get("/{modality}/p/{page}", "Site@biddingModality");
 $route->post("/buscar", "Site@biddingSearch");
-$route->get("/buscar/{process_number}/{search}/{dateOne}/{dateTwo}/{modality}/{status}/p/{page}", "Site@biddingSearch");
+$route->get("/buscar/{process_number}/{search}/{datePrevious}/{dateLater}/{modality}/{status}/p/{page}", "Site@biddingSearch");
 
 
 // GESTÃO
@@ -49,14 +49,23 @@ $route->get("/{secretary}", "Site@managementSecretary");
 //DECRETOS
 $route->group("decretos");
 $route->get("/", "Site@decree");
+$route->get("/p/{page}", "Site@decree");
+$route->post("/buscar", "Site@decreeSearch");
+$route->get("/buscar/{number_decree}/{search}/{type}/{datePrevious}/{dateLater}/p/{page}", "Site@decreeSearch");
 
 //LEIS
 $route->group("leis");
 $route->get("/", "Site@laws");
+$route->post("/buscar", "Site@lawSearch");
+$route->get("/buscar/{law_number}/{search}/{datePrevious}/{dateLater}/p/{page}", "Site@lawSearch");
+
 
 //PORTARIAS
 $route->group("portarias");
 $route->get("/", "Site@ordinance");
+$route->post("/buscar", "Site@ordinanceSearch");
+$route->get("/buscar/{number_ordinance}/{search}/{datePrevious}/{dateLater}/p/{page}", "Site@ordinanceSearch");
+
 
 
 //MUNICIPIO
