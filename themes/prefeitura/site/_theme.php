@@ -167,8 +167,8 @@
 <!-- FIM GESTÃO -->
 <!-- FOOTER - RODAPÉ -->
 <footer class="mt-auto px-5 py-5">
-    <div class="container-fluid">
-        <div class="d-flex flex-wrap justify-content-around align-items-base mb-5">
+    <div class="container-fluid" id="rodape-site">
+        <div class="d-flex flex-wrap justify-content-around align-items-base pb-5">
             <div id="logo-brazopolis-cabecalho"
                  class="d-flex align-items-end justify-content-center flex-wrap flex-md-nowrap">
                 <a href="<?= url("/"); ?>" class="">
