@@ -36,6 +36,9 @@ abstract class Model
     /** @var int */
     protected $offset;
 
+    /** @var array $entity data search filter*/
+    protected static $filterSearch;
+
     /** @var string $entity database table */
     protected static $entity;
 
@@ -51,11 +54,12 @@ abstract class Model
      * @param array $protected table protected columns
      * @param array $required table required columns
      */
-    public function __construct(string $entity, array $protected, array $required)
+    public function __construct(string $entity, array $protected, array $required, array $filterSearch = null)
     {
         self::$entity = $entity;
         self::$protected = array_merge($protected, ['created_at', "updated_at"]);
         self::$required = $required;
+        self::$filterSearch = $filterSearch;
 
         $this->message = new Message();
     }
@@ -184,55 +188,56 @@ abstract class Model
      * @param Array $data
      * @return void
      */
-    public function filterSearch(Array $data, Array $filter)
+    public function filterSearch(Array $data, string $dateInterval = "date_pub", string $columns = "*")
     {
 
         $paramns = null;
-
-
-        foreach ($filter as $key => $value) {
+  
+        foreach (self::$filterSearch as $key => $value) {
             if (array_key_exists($key, $data)) {
                 if ($data[$key] != "all") {
                     $paramns[$key] = "{$key}={$data[$key]}";
                 } else {
-                    unset($filter[$key]);
+                    unset(self::$filterSearch[$key]);
                 }
             } else {
-                unset($filter[$key]);
+                unset(self::$filterSearch[$key]);
             }
         }
+     
 
-        if (!empty($data["dateOne"]) && isset($data["dateOne"]) && $data["dateOne"] != "all" &&
-            !empty($data["dateTwo"]) && isset($data["dateTwo"]) && $data["dateTwo"] != "all") {
-            $filter["date"] = "created_at BETWEEN :dateOne AND :dateTwo";
+        if (!empty($data["datePrevious"]) && isset($data["datePrevious"]) && $data["datePrevious"] != "all" &&
+            !empty($data["dateLater"]) && isset($data["dateLater"]) && $data["dateLater"] != "all") {
+
+            self::$filterSearch["date"] ="{$dateInterval} BETWEEN :datePrevious AND :dateLater";
             $data["date"] = "";
 
-            $paramns["dateOne"] = "dateOne=" . $data["dateOne"];
-            $paramns["dateTwo"] = "dateTwo=" . $data["dateTwo"];
+            $paramns["datePrevious"] = "datePrevious=" . $data["datePrevious"];
+            $paramns["dateLater"] = "dateLater=" . $data["dateLater"];
 
-            $dateOne = new \DateTime($data["dateOne"]);
-            $dateTwo = new \DateTime($data["dateTwo"]);
+            $datePrevious = new \DateTime($data["datePrevious"]);
+            $dateLater = new \DateTime($data["dateLater"]);
 
-            if (($dateOne->diff($dateTwo))->invert == 1) {
-                $paramns["dateOne"] = "dateOne=" . $data["dateTwo"];
-                $paramns["dateTwo"] = "dateTwo=" . $data["dateOne"];
+            if (($datePrevious->diff($dateLater))->invert == 1) {
+                $paramns["datePrevious"] = "datePrevious=" . $data["dateLater"];
+                $paramns["dateLater"] = "dateLater=" . $data["datePrevious"];
             }
-        } elseif (!empty($data["dateOne"]) && isset($data["dateOne"]) && $data["dateOne"] != "all") {
-            $filter["date"] = "created_at >= :date";
+        } elseif (!empty($data["datePrevious"]) && isset($data["datePrevious"]) && $data["datePrevious"] != "all") {
+            self::$filterSearch["date"] = "{$dateInterval} >= :date";
             $data["date"] = "";
-            $paramns["date"] = "date=" . $data["dateOne"];
-        } elseif (!empty($data["dateTwo"]) && isset($data["dateTwo"]) && $data["dateTwo"] != "all") {
-            $filter["date"] = "created_at >= :date";
+            $paramns["date"] = "date=" . $data["datePrevious"];
+        } elseif (!empty($data["dateLater"]) && isset($data["dateLater"]) && $data["dateLater"] != "all") {
+            self::$filterSearch["date"] = "{$dateInterval} <= :date";
             $data["date"] = "";
-            $paramns["date"] = "date=" . $data["dateTwo"];
+            $paramns["date"] = "date=" . $data["dateLater"];
         }
 
-
-
-        $filter = implode(" AND ", $filter);
+        self::$filterSearch = implode(" AND ", self::$filterSearch);
         $paramns = ($paramns)? implode("&", $paramns):"";
 
-        return $this->find($filter, $paramns);
+        // var_dump($this->find(self::$filterSearch, $paramns));
+
+        return $this->find(self::$filterSearch, $paramns, $columns);
 
         
     }
@@ -255,6 +260,8 @@ abstract class Model
             if ($all) {
                 return $stmt->fetchAll(\PDO::FETCH_CLASS, static::class);
             }
+
+            
 
             return $stmt->fetchObject(static::class);
         } catch (\PDOException $exception) {
