@@ -50,7 +50,7 @@
 <?php $v->insert("quick-access"); ?>
 
 <!--DOCUMENTOS-->
-<?php $v->insert("documents"); ?>
+<?php $v->insert("Documents/interestingDocuments"); ?>
 
 <!--GESTÃO PREVIEW-->
 <?php $v->insert("Management/management-preview"); ?>
