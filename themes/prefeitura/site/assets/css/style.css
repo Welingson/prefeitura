@@ -175,6 +175,7 @@ h1, h2, h3, h4, h5, h6 {
 .card-link-acesso-rapido>a{
     -webkit-transition: 0.2s;
     transition: 0.2s;
+    border-bottom: 3px solid #07539c !important;
     border-radius: 7px;
     display: flex;
     flex-direction: column;
@@ -182,6 +183,7 @@ h1, h2, h3, h4, h5, h6 {
     margin: 10px;
     width: 200px;
     height: 200px;
+    
 }
 .card-link-acesso-rapido>a:hover{
     text-decoration: none;
@@ -258,65 +260,95 @@ h1, h2, h3, h4, h5, h6 {
 
 
 /* CARD DOCUMENTOS */
-.card-documentos{
-    background-color: brown;
+
+.card-documents{
+    padding: unset !important;
 }
 
-#accordion-documents>div>div{
-    padding: unset;
+.card-documents-header{
+    background-color: #4CAF50;
+
 }
 
-
-.card-link-documentos{
+.documents {
     display: flex;
-    align-items: center;
-    justify-content: center;
     flex-wrap: wrap;
-    max-height: 230px;
-    overflow-y: scroll;
-
-
-}
-
-.card-link-documentos::-webkit-scrollbar{
-    width: 10px;
-}
-
-.card-link-documentos::-webkit-scrollbar-thumb{
-    background: brown;
-
-}
-
-.card-link-documentos::-webkit-scrollbar-track{
-    background: lightgray;
-}
-
-.card-link-documentos>a{
-    -webkit-transition: 0.2s;
-    transition: 0.2s;
-    text-decoration: none;
-    border-radius: 5px;
-    display: flex;
-    align-items: center;
-    background-color: lightgray;
-    color: brown;
-    height: 50px;
-    padding: 20px;
+    align-items: flex-start;
+    justify-content: center;
     margin: 10px;
-
+    /* padding: unset !important; */
+    /* margin: unset; */
 }
 
-.card-link-documentos>a>i>span{
-    font-family: monospace;
-
+.document {
+    flex-basis: calc(50% - 30px);
+    /* width: 100%; */
+    cursor: pointer;
+    padding: 20px;
+    margin: 15px;
+    border: 1px solid #cccccc;
+    border-bottom: 3px solid #4CAF50;
+    /* color: var(--color-default); */
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    border-radius: 10px;
 }
 
-.card-link-documentos>a:hover{
-    color: #fff;
-    background-color: brown;
-
+.document h4 {
+    font-size: 1.2rem;
+    font-weight: 700;
 }
 
+
+.document a:hover {
+    text-decoration: underline;
+}
+
+.document_coll {
+    display: none;
+}
+
+
+#more-documents{
+    display: flex;
+    justify-content: center;
+    margin: 25px;
+}
+
+#more-documents>a{
+    font-size: 20px;
+    width: 300px;
+}
+
+.document {
+    /* flex-basis: 100%; */
+    /* margin: 20px 0 0 0; */
+}
+
+
+@media (min-width: 240px){
+    .document{
+        flex-basis: calc(100% - 30px);
+    }
+}
+
+@media (min-width: 360px){
+    .document{
+        flex-basis: calc(100% - 30px);
+    }
+}
+
+@media (min-width: 360px){
+    .document{
+        flex-basis: calc(100% - 30px);
+    }
+}
+
+@media (min-width: 768px){
+    .document{
+        flex-basis: calc(50% - 30px);
+    }
+}
 /* SECAO GESTÃO */
 
 .secao-gestao{
@@ -478,14 +510,11 @@ a{
 /* FOOTER */
 
 footer{
-    
-    /* padding: 2.5rem 0; */
-    /* padding-bottom: 5rem; */
-    /* color: #999; */
-    /* text-align: center; */
+
     background-color: #07539c;
 
 }
+
 
 .prefeitura-rodape{
     text-align: center;
@@ -1176,6 +1205,51 @@ footer{
 
 /*DEFAULT PAGINATOR*/
 
+.paginator {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 50px 0;
+    
+}
+
+.paginator a, .paginator span {
+    display: inline-block;
+    padding: 8px 16px;
+    border: 1px solid #cccccc;
+    border-right: 0;
+    color: #555555;
+    font-weight: 700;
+    text-decoration: none;
+    transition-duration: 0.2s;
+}
+
+.paginator a:first-of-type {
+    -webkit-border-radius: 5px 0 0 5px;
+    -moz-border-radius: 5px 0 0 5px;
+    border-radius: 5px 0 0 5px;
+}
+
+.paginator a:last-of-type {
+    border-right: 1px solid #cccccc;
+    -webkit-border-radius: 0 5px 5px 0;
+    -moz-border-radius: 0 5px 5px 0;
+    border-radius: 0 5px 5px 0;
+}
+
+.paginator a:hover {
+    background: #2979FF;
+    background-size: 200%;
+    color: #FBFBFB;
+}
+
+.paginator span {
+    background: #2979FF;
+}
+
+.paginator_active{
+    color: #fff !important;
+}
 
 
 
