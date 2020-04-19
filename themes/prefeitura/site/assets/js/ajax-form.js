@@ -6,8 +6,9 @@ $(function () {
         e.preventDefault();
 
         let spinner = document.getElementById("spinner-load");
+      
 
-        var form = $(this);
+        var form = $(this);        
         var load = $(".ajax_load");
         var flashClass = "ajax_response";
         var flash = $("." + flashClass);
@@ -22,9 +23,10 @@ $(function () {
             },
             success: function (response) {
                 //redirect
-                if (response.redirect) {
-
+                if (response) {
+                    // console.log(response);
                     window.location.href = response.redirect;
+                    
                 }
 
                 //message
