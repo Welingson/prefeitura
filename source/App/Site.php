@@ -10,11 +10,12 @@ use Source\Models\Bidding\Status;
 use Source\Models\Category;
 use Source\Models\Contact;
 use Source\Models\Decree\Decree;
-use Source\Models\DocumentType;
+use Source\Models\InterestingDocuments;
 use Source\Models\Management;
 use Source\Models\News\News;
 use Source\Models\Secretary;
 use Source\Models\Law\Law;
+use Source\Models\Mark\Mark;
 use Source\Models\Ordinance\Ordinance;
 use Source\Support\Pager;
 
@@ -41,6 +42,7 @@ class Site extends Controller
                 "head" => $head,
                 "news" => (new News())->find()->fetch(true),
                 "banners" => (new Banner())->find()->fetch(true),
+                "interestingDocuments" => (new InterestingDocuments())->find(null, null, "id, description, title, dir_attachment")->order("date_pub DESC")->fetch(true),
                 "secretary" => (new Secretary())->find()->fetch(true)
             ]
         );
@@ -61,7 +63,7 @@ class Site extends Controller
             [
                 "head" => $head,
                 "news" => (new News())->find()->fetch(true),
-                "category" => (new Category())->find("type = :type", "type=news", "id, category")->fetch(true)
+                "category" => (new Category())->find("for_whom = :for_whom", "for_whom=news", "id, category")->fetch(true)
             ]
         );
     }
@@ -164,6 +166,11 @@ class Site extends Controller
     {
 
         $bidding = (new Bidding())->find("", "", "id, process_number, object, bidding_number, modality, status");
+
+        if (!$bidding->count() > 0) {
+            redirect("/404");
+        }
+
         $pager = new Pager(url("/licitacao/p/"));
         $pager->pager($bidding->count(), 5, $data['page'] ?? 1);
 
@@ -178,9 +185,9 @@ class Site extends Controller
             "Documents/bidding",
             [
                 "head" => $head,
-                "modality" => (new Category())->find("type = :type", "type=bidding", "id, category")->order("category ASC")->fetch(true),
+                "modality" => (new Category())->find("for_whom = :for_whom", "for_whom=bidding", "id, category")->order("category ASC")->fetch(true),
                 "status" => (new Status())->find("", "", "id, status")->order("status ASC")->fetch(true),
-                "bidding" => $bidding->order("process_number DESC")->limit($pager->limit())->offset($pager->offset())->fetch(true),
+                "bidding" => $bidding->order("process_number DESC, date_pub DESC")->limit($pager->limit())->offset($pager->offset())->fetch(true),
                 "paginator" => $pager->render()
             ]
         );
@@ -189,9 +196,10 @@ class Site extends Controller
     public function biddingModality(?array $data): void
     {
 
-        $modality = str_replace("-", " ", $data["modality"]);
+        $modality = (!empty($data["modality"]) ? str_replace("-", " ", $data["modality"]) : "");
 
         $category = (new Category())->find("category LIKE :category", "category=%{$modality}%", "id")->fetch();
+
         if (!$category) {
             redirect("/404");
         }
@@ -211,8 +219,8 @@ class Site extends Controller
             "Documents/bidding",
             [
                 "head" => $head,
-                "bidding" => $bidding->order("process_number DESC")->limit($pager->limit())->offset($pager->offset())->fetch(true),
-                "modality" => (new Category())->find("type = :type", "type=bidding", "id, category")->order("category ASC")->fetch(true),
+                "bidding" => $bidding->order("process_number DESC, date_pub DESC")->limit($pager->limit())->offset($pager->offset())->fetch(true),
+                "modality" => (new Category())->find("for_whom = :for_whom", "for_whom=bidding", "id, category")->order("category ASC")->fetch(true),
                 "status" => (new Status())->find("", "", "id, status")->order("status ASC")->fetch(true),
                 "paginator" => $pager->render()
             ]
@@ -228,11 +236,11 @@ class Site extends Controller
             }
 
             $number = (!empty($dataValidate["number"]) ? $dataValidate["number"] : "all");
-           
+
             $search = (!empty($dataValidate["terms"]) ? $dataValidate["terms"] : "all");
 
-            $dateOne = (!empty($dataValidate["datePrevious"]) && isset($dataValidate["datePrevious"])? $dataValidate["datePrevious"]: "all");
-            $dateTwo = (!empty($dataValidate["dateLater"]) && isset($dataValidate["dateLater"])? $dataValidate["dateLater"]: "all");
+            $dateOne = (!empty($dataValidate["datePrevious"]) && isset($dataValidate["datePrevious"]) ? $dataValidate["datePrevious"] : "all");
+            $dateTwo = (!empty($dataValidate["dateLater"]) && isset($dataValidate["dateLater"]) ? $dataValidate["dateLater"] : "all");
 
             $modality = (!empty($dataValidate["category"]) ? $dataValidate["category"] : "all");
             $status = (!empty($dataValidate["status"]) ? $dataValidate["status"] : "all");
@@ -254,7 +262,7 @@ class Site extends Controller
 
         $pager = new Pager(url("/licitacao/buscar/{$data['process_number']}/{$data['search']}/{$data['datePrevious']}/{$data['dateLater']}/{$data['modality']}/{$data['status']}/p/"));
         $pager->pager($bidding->count(), 3, $data['page'] ?? 1);
-        
+
         $head = $this->seo->render(
             "Licitações da " . CONF_SITE_NAME,
             "Confira as Licitações da" . CONF_SITE_DESC,
@@ -267,12 +275,11 @@ class Site extends Controller
             [
                 "head" => $head,
                 "bidding" => $bidding->order("bidding_number DESC, date_pub DESC")->limit($pager->limit())->offset($pager->offset())->fetch(true),
-                "modality" => (new Category())->find("type = :type", "type=bidding", "id, category")->order("category ASC")->fetch(true),
+                "modality" => (new Category())->find("for_whom = :for_whom", "for_whom=bidding", "id, category")->order("category ASC")->fetch(true),
                 "status" => (new Status())->find("", "", "id, status")->order("status ASC")->fetch(true),
                 "paginator" => $pager->render()
             ]
         );
-
     }
 
     public function decree(?array $data): void
@@ -285,9 +292,12 @@ class Site extends Controller
             theme("/assets/images/logo-brazopolis.png")
         );
 
-        $decree = new Decree();
+        $decree = (new Decree())->find(null, null, "id, number_decree, decree, category, date_pub");
 
-        $decree->find(null, null, "id, number_decree, type, date_pub");
+        if (!$decree->count() > 0) {
+            redirect("/404");
+        }
+
         $pager = new Pager(url("/decretos/p/"));
         $pager->pager($decree->count(), 5, $data['page'] ?? 1);
 
@@ -296,6 +306,7 @@ class Site extends Controller
             [
                 "head" => $head,
                 "decree" => $decree->order("number_decree DESC, date_pub DESC")->limit($pager->limit())->offset($pager->offset())->fetch(true),
+                "category" => (new Category())->find("for_whom = :for_whom", "for_whom=decree")->order("category ASC")->fetch(true),
                 "paginator" => $pager->render()
             ]
         );
@@ -311,13 +322,13 @@ class Site extends Controller
 
             $number = (!empty($dataValidate["number"]) ? $dataValidate["number"] : "all");
             $search = (!empty($dataValidate["terms"]) ? $dataValidate["terms"] : "all");
-            $type = (!empty($dataValidate["type"]) ? $dataValidate["type"] : "all");
-          
-            $datePrevious = (!empty($dataValidate["datePrevious"]) && isset($dataValidate["datePrevious"])? $dataValidate["datePrevious"]: "all");
-            $dateLater = (!empty($dataValidate["dateLater"]) && isset($dataValidate["dateLater"])? $dataValidate["dateLater"]: "all");
+            $category = (!empty($dataValidate["category"]) ? $dataValidate["category"] : "all");
+
+            $datePrevious = (!empty($dataValidate["datePrevious"]) && isset($dataValidate["datePrevious"]) ? $dataValidate["datePrevious"] : "all");
+            $dateLater = (!empty($dataValidate["dateLater"]) && isset($dataValidate["dateLater"]) ? $dataValidate["dateLater"] : "all");
 
             echo json_encode(
-                ["redirect" => url("/decretos/buscar/{$number}/{$search}/{$type}/{$datePrevious}/{$dateLater}/p/1")]
+                ["redirect" => url("/decretos/buscar/{$number}/{$search}/{$category}/{$datePrevious}/{$dateLater}/p/1")]
             );
             return;
         }
@@ -327,11 +338,9 @@ class Site extends Controller
             redirect("/decretos");
         }
 
-        $decree = new Decree();
+        $decree = (new Decree())->filterSearch($data);
 
-        $decree = $decree->filterSearch($data);
-
-        $pager = new Pager(url("/decretos/buscar/{$data['number_decree']}/{$data['search']}/{$data['type']}/{$data['datePrevious']}/{$data['dateLater']}/p/"));
+        $pager = new Pager(url("/decretos/buscar/{$data['number_decree']}/{$data['search']}/{$data['category']}/{$data['datePrevious']}/{$data['dateLater']}/p/"));
         $pager->pager($decree->count(), 3, $data['page'] ?? 1);
 
         $head = $this->seo->render(
@@ -345,7 +354,9 @@ class Site extends Controller
             "Documents/decree",
             [
                 "head" => $head,
-                "decree" => $decree->limit($pager->limit())->offset($pager->offset())->order("number_decree DESC")->fetch(true)
+                "decree" => $decree->limit($pager->limit())->offset($pager->offset())->order("number_decree DESC, date_pub DESC")->fetch(true),
+                "category" => (new Category())->find("for_whom = :for_whom", "for_whom=decree")->order("category ASC")->fetch(true),
+                "paginator" => $pager->render()
             ]
         );
     }
@@ -359,18 +370,27 @@ class Site extends Controller
             theme("/assets/images/logo-brazopolis.png")
         );
 
-        $law = (new Law())->find(null, null, "id, law, law_number, type, date_pub, law_attachment")->order("law_number DESC, date_pub DESC")->fetch(true);
+        $law = (new Law())->find(null, null, "id, law, law_number, category, date_pub, law_attachment");
+
+        if (!$law->count() > 0) {
+            redirect("/404");
+        }
+
+        $pager = new Pager(url("/leis/p/"));
+        $pager->pager($law->count(), 5, $data['page'] ?? 1);
 
         echo $this->view->render(
             "Documents/law",
             [
                 "head" => $head,
-                "law" => $law
+                "law" => $law->limit($pager->limit())->offset($pager->offset())->order("law_number DESC, date_pub DESC")->fetch(true),
+                "category" => (new Category())->find("for_whom = :for_whom", "for_whom=laws")->order("category ASC")->fetch(true),
+                "paginator" => $pager->render()
             ]
         );
     }
 
-    public function lawSearch(Array $data): void
+    public function lawSearch(array $data): void
     {
 
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -380,12 +400,13 @@ class Site extends Controller
 
             $number = (!empty($dataValidate["number"]) ? $dataValidate["number"] : "all");
             $search = (!empty($dataValidate["terms"]) ? $dataValidate["terms"] : "all");
-          
-            $datePrevious = (!empty($dataValidate["datePrevious"]) && isset($dataValidate["datePrevious"])? $dataValidate["datePrevious"]: "all");
-            $dateLater = (!empty($dataValidate["dateLater"]) && isset($dataValidate["dateLater"])? $dataValidate["dateLater"]: "all");
+            $category = (!empty($dataValidate["category"]) ? $dataValidate["category"] : "all");
+
+            $datePrevious = (!empty($dataValidate["datePrevious"]) && isset($dataValidate["datePrevious"]) ? $dataValidate["datePrevious"] : "all");
+            $dateLater = (!empty($dataValidate["dateLater"]) && isset($dataValidate["dateLater"]) ? $dataValidate["dateLater"] : "all");
 
             echo json_encode(
-                ["redirect" => url("/leis/buscar/{$number}/{$search}/{$datePrevious}/{$dateLater}/p/1")]
+                ["redirect" => url("/leis/buscar/{$number}/{$search}/{$category}/{$datePrevious}/{$dateLater}/p/1")]
             );
             return;
         }
@@ -395,13 +416,7 @@ class Site extends Controller
             redirect("/leis");
         }
 
-        $law = new Law();
-
-        // var_dump($data);
-
-        $law = $law->filterSearch($data);
-
-        // var_dump($law);
+        $law = (new Law())->filterSearch($data);
 
         $pager = new Pager(url("/decretos/buscar/{$data['law_number']}/{$data['search']}/{$data['datePrevious']}/{$data['dateLater']}/p/"));
         $pager->pager($law->count(), 3, $data['page'] ?? 1);
@@ -418,12 +433,11 @@ class Site extends Controller
             "Documents/law",
             [
                 "head" => $head,
-                "documentType" => (new DocumentType())->find(null, null, "id, type")->order("type ASC")->fetch(true),
-                "law" => $law->limit($pager->limit())->offset($pager->offset())->order("law_number DESC")->fetch(true)
+                "law" => $law->limit($pager->limit())->offset($pager->offset())->order("law_number DESC")->fetch(true),
+                "category" => (new Category())->find("for_whom = :for_whom", "for_whom=laws")->order("category ASC")->fetch(true),
+                "paginator" => $pager->render()
             ]
         );
-
-        
     }
 
     public function ordinance(?array $data): void
@@ -435,21 +449,27 @@ class Site extends Controller
             theme("/assets/images/logo-brazopolis.png")
         );
 
-        $ordinance = (new Ordinance())
-            ->find(null, null, "id, number_ordinance, ordinance, ordinance_attachment, created_at")
-            ->order("number_ordinance DESC")
-            ->fetch(true);
+        $ordinance = (new Ordinance())->find(null, null, "id, number_ordinance, ordinance, ordinance_attachment, date_pub");
+
+
+        if (!$ordinance->count() > 0) {
+            redirect("/404");
+        }
+
+        $pager = new Pager(url("/leis/p/"));
+        $pager->pager($ordinance->count(), 5, $data['page'] ?? 1);
 
         echo $this->view->render(
             "Documents/ordinance",
             [
                 "head" => $head,
-                "ordinance" => $ordinance
+                "ordinance" => $ordinance->limit($pager->limit())->offset($pager->offset())->order("number_ordinance DESC, date_pub DESC")->fetch(true),
+                "paginator" => $pager->render()
             ]
         );
     }
 
-    public function ordinanceSearch(Array $data): void
+    public function ordinanceSearch(array $data): void
     {
 
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -459,9 +479,9 @@ class Site extends Controller
 
             $number = (!empty($dataValidate["number"]) ? $dataValidate["number"] : "all");
             $search = (!empty($dataValidate["terms"]) ? $dataValidate["terms"] : "all");
-          
-            $datePrevious = (!empty($dataValidate["datePrevious"]) && isset($dataValidate["datePrevious"])? $dataValidate["datePrevious"]: "all");
-            $dateLater = (!empty($dataValidate["dateLater"]) && isset($dataValidate["dateLater"])? $dataValidate["dateLater"]: "all");
+
+            $datePrevious = (!empty($dataValidate["datePrevious"]) && isset($dataValidate["datePrevious"]) ? $dataValidate["datePrevious"] : "all");
+            $dateLater = (!empty($dataValidate["dateLater"]) && isset($dataValidate["dateLater"]) ? $dataValidate["dateLater"] : "all");
 
             echo json_encode(
                 ["redirect" => url("/portarias/buscar/{$number}/{$search}/{$datePrevious}/{$dateLater}/p/1")]
@@ -474,13 +494,7 @@ class Site extends Controller
             redirect("/portarias");
         }
 
-        $ordinance = new Ordinance();
-
-        // var_dump($data);
-
-        $ordinance = $ordinance->filterSearch($data);
-
-        // var_dump($ordinance);
+        $ordinance = (new Ordinance())->filterSearch($data);
 
         $pager = new Pager(url("/decretos/buscar/{$data['number_ordinance']}/{$data['search']}/{$data['datePrevious']}/{$data['dateLater']}/p/"));
         $pager->pager($ordinance->count(), 3, $data['page'] ?? 1);
@@ -497,11 +511,174 @@ class Site extends Controller
             "Documents/ordinance",
             [
                 "head" => $head,
-                "ordinance" => $ordinance->limit($pager->limit())->offset($pager->offset())->order("number_ordinance DESC, date_pub DESC")->fetch(true)
+                "ordinance" => $ordinance->limit($pager->limit())->offset($pager->offset())->order("number_ordinance DESC, date_pub DESC")->fetch(true),
+                "paginator" => $pager->render()
             ]
         );
-        
     }
+
+
+
+    public function regulationMark(array $data): void
+    {
+
+        $mark = (new Mark())->find(null, null, "number_mark, mark, category, date_pub");
+
+        if (!$mark->count() > 0) {
+            redirect("/404");
+        }
+
+        $pager = new Pager(url("/marco-regulatorio/p/"));
+        $pager->pager($mark->count(), 5, $data['page'] ?? 1);
+
+        $head = $this->seo->render(
+            "Marco Regulatório - " . CONF_SITE_NAME,
+            "Marco Regulatório - " . CONF_SITE_DESC,
+            url("/marco-regulatorio"),
+            theme("/assets/images/logo-brazopolis.png")
+        );
+
+
+        echo $this->view->render(
+            "Documents/mark",
+            [
+                "head" => $head,
+                "mark" => $mark->limit($pager->limit())->offset($pager->offset())->order("number_mark DESC, date_pub DESC")->fetch(true),
+                "category" => (new Category())->find("for_whom = :for_whom", "for_whom=mark")->order("category ASC")->fetch(true),
+                "paginator" => $pager->render()
+            ]
+        );
+    }
+
+    public function regulationMarkSearch(array $data): void
+    {
+        if ($_SERVER["REQUEST_METHOD"] == "POST") {
+            foreach ($data as $key => $search) {
+                $dataValidate[$key] = filter_var($search, FILTER_SANITIZE_STRIPPED);
+            }
+
+            $number = (!empty($dataValidate["number"]) ? $dataValidate["number"] : "all");
+            $search = (!empty($dataValidate["terms"]) ? $dataValidate["terms"] : "all");
+            $category = (!empty($dataValidate["category"]) ? $dataValidate["category"] : "all");
+            $datePrevious = (!empty($dataValidate["datePrevious"]) && isset($dataValidate["datePrevious"]) ? $dataValidate["datePrevious"] : "all");
+            $dateLater = (!empty($dataValidate["dateLater"]) && isset($dataValidate["dateLater"]) ? $dataValidate["dateLater"] : "all");
+
+            echo json_encode(
+                ["redirect" => url("/marco-regulatorio/buscar/{$number}/{$search}/{$category}/{$datePrevious}/{$dateLater}/p/1")]
+            );
+            return;
+        }
+
+
+        if (empty($data)) {
+            redirect("/marco-regulatorio");
+        }
+
+        $mark = (new Mark())->filterSearch($data);
+
+        $pager = new Pager(url("/marco-regulatorio/buscar/{$data['number_mark']}/{$data['search']}/{$data['category']}/{$data['datePrevious']}/{$data['dateLater']}/p/"));
+        $pager->pager($mark->count(), 3, $data['page'] ?? 1);
+
+
+        $head = $this->seo->render(
+            "Marco Regulatório - " . CONF_SITE_NAME,
+            "Marcos regulatórios publicados - " . CONF_SITE_DESC,
+            url("/marco-regulatorio"),
+            theme("/assets/images/logo-brazopolis.png")
+        );
+
+        echo $this->view->render(
+            "Documents/mark",
+            [
+                "head" => $head,
+                "mark" => $mark->limit($pager->limit())->offset($pager->offset())->order("number_mark DESC")->fetch(true),
+                "category" => (new Category())->find("for_whom = :for_whom", "for_whom=mark")->order("category ASC")->fetch(true),
+                "paginator" => $pager->render()
+            ]
+        );
+    }
+
+    public function interestingDocuments(array $data): void
+    {
+
+        $interestingDocuments = (new InterestingDocuments)
+            ->find(null, null, "id, description, date_pub, title, dir_attachment");
+
+        if (!$interestingDocuments->count() > 0) {
+            redirect("/404");
+        }
+
+
+        $pager = new Pager(url("/documentos-interessantes/p/"));
+        $pager->pager($interestingDocuments->count(), 3, $data['page'] ?? 1);
+
+
+        $head = $this->seo->render(
+            "Documentos interessantes - " . CONF_SITE_NAME,
+            "Documentos interessantes publicados - " . CONF_SITE_DESC,
+            url("/documentos-interessantes"),
+            theme("/assets/images/logo-brazopolis.png")
+        );
+
+
+        echo $this->view->render(
+            "Documents/interestingDocumentsList",
+            [
+                "head" => $head,
+                "interestingDocuments" => $interestingDocuments->order("date_pub DESC")->limit($pager->limit())->offset($pager->offset())->fetch(true),
+                "paginator" => $pager->render()
+
+
+            ]
+        );
+    }
+
+    public function interestingDocumentsSearch(array $data): void
+    {
+        if ($_SERVER["REQUEST_METHOD"] == "POST") {
+            foreach ($data as $key => $search) {
+                $dataValidate[$key] = filter_var($search, FILTER_SANITIZE_STRIPPED);
+            }
+
+
+            $search = (!empty($dataValidate["terms"]) ? $dataValidate["terms"] : "all");
+            $datePrevious = (!empty($dataValidate["datePrevious"]) && isset($dataValidate["datePrevious"]) ? $dataValidate["datePrevious"] : "all");
+            $dateLater = (!empty($dataValidate["dateLater"]) && isset($dataValidate["dateLater"]) ? $dataValidate["dateLater"] : "all");
+
+            echo json_encode(
+                ["redirect" => url("/documentos-interessantes/buscar/{$search}/{$datePrevious}/{$dateLater}/p/1")]
+            );
+            return;
+        }
+
+        if (empty($data)) {
+            redirect("/documentos-interessantes");
+        }
+
+        $interestingDocuments = (new InterestingDocuments())->filterSearch($data);
+
+        $pager = new Pager(url("/documentos-interessantes/buscar/{$data['search']}/{$data['datePrevious']}/{$data['dateLater']}/p/"));
+        $pager->pager($interestingDocuments->count(), 3, $data['page'] ?? 1);
+
+        $head = $this->seo->render(
+            "Documentos interessantes - " . CONF_SITE_NAME,
+            "Documentos interessantes publicados - " . CONF_SITE_DESC,
+            url("/documentos-interessantes"),
+            theme("/assets/images/logo-brazopolis.png")
+        );
+
+        echo $this->view->render(
+            "Documents/interestingDocumentsList",
+            [
+                "head" => $head,
+                "interestingDocuments" => $interestingDocuments->order("date_pub DESC")->limit($pager->limit())->offset($pager->offset())->fetch(true),
+                "paginator" => $pager->render()
+
+
+            ]
+        );
+    }
+
 
     public function management(?array $data): void
     {
@@ -517,7 +694,6 @@ class Site extends Controller
             url("/gestao"),
             theme("/assets/images/logo-brazopolis.png")
         );
-
 
         echo $this->view->render(
             "Management/management-list",
@@ -539,13 +715,13 @@ class Site extends Controller
         $employee = (new Management())->findByManager($secretary->id, "employee", true);
         $contactManager = (new Contact())->findByManagerId($manager->id, "telephone, email");
 
-
         $head = $this->seo->render(
             "{$secretary->secretary} - " . CONF_SITE_NAME,
             "{$secretary->secretary} - " . CONF_SITE_DESC,
             url("/gestao/" . strtolower($secretary->secretary)),
             theme("/assets/images/logo-brazopolis.png")
         );
+
 
 
         echo $this->view->render(
@@ -560,9 +736,6 @@ class Site extends Controller
             ]
         );
     }
-
-
-
 
     public function county(?array $data): void
     {
