@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Tempo de geração: 18-Maio-2020 às 09:03
+-- Tempo de geração: 16-Jun-2020 às 07:38
 -- Versão do servidor: 8.0.18
 -- versão do PHP: 7.3.12
 
@@ -21,6 +21,20 @@ SET time_zone = "+00:00";
 --
 -- Banco de dados: `db_prefeitura`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `tb_access_ip`
+--
+
+CREATE TABLE `tb_access_ip` (
+  `id` int(11) NOT NULL,
+  `ip` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `id_user` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -168,7 +182,42 @@ INSERT INTO `tb_category` (`id`, `category`, `for_whom`, `created_at`) VALUES
 (14, 'Complementar', 'laws', '2020-04-20 23:09:05'),
 (15, 'Municipal', 'laws', '2020-04-20 23:09:05'),
 (16, 'Dispensa', 'mark', '2020-04-20 23:10:20'),
-(17, 'Inexigibilidade', 'mark', '2020-04-20 23:10:20');
+(17, 'Inexigibilidade', 'mark', '2020-04-20 23:10:20'),
+(18, 'CODEMA', 'city​_councils', '2020-05-22 13:43:22'),
+(19, 'ESPORTES', 'city ​​councils', '2020-05-22 13:43:22'),
+(20, 'PMSB', 'city​_councils', '2020-05-22 13:43:22'),
+(21, 'COMTUR', 'city​_councils', '2020-05-22 13:43:22'),
+(22, 'CMAS', 'city​_councils', '2020-05-22 13:43:22'),
+(23, 'CMDCA', 'city​_councils', '2020-05-22 13:43:22'),
+(24, 'EXPO', 'city​_councils', '2020-05-22 13:43:22'),
+(25, 'COMPAC', 'city​_councils', '2020-05-22 13:43:22'),
+(26, 'SUAS', 'city​_councils', '2020-05-22 13:43:22'),
+(27, 'COMUTI', 'city​_councils', '2020-05-22 13:43:22');
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `tb_city_councils`
+--
+
+CREATE TABLE `tb_city_councils` (
+  `id` int(11) NOT NULL,
+  `title` varchar(200) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `description` varchar(500) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `date_pub` date NOT NULL,
+  `category` int(11) NOT NULL COMMENT 'CDEMA, CMDCA, ESPORTES ETC',
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `dir_attachment` varchar(200) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Extraindo dados da tabela `tb_city_councils`
+--
+
+INSERT INTO `tb_city_councils` (`id`, `title`, `description`, `date_pub`, `category`, `created_at`, `dir_attachment`) VALUES
+(3, 'Codema decreto 002/2017', '\"Estabelece os membros do CODEMA - Conselho Municipal de Desenvolvimento Ambieltal\".', '2020-06-01', 18, '2020-06-01 12:14:19', 'documents/city-councils'),
+(4, 'Codema decreto 003/2017', '\"Estabelece os membros do CODEMA - Conselho Municipal de Desenvolvimento Ambiemtal\".', '2020-06-02', 18, '2020-06-01 12:14:19', 'documents/city-councils');
 
 -- --------------------------------------------------------
 
@@ -298,6 +347,51 @@ INSERT INTO `tb_laws` (`id`, `law`, `law_number`, `category`, `date_pub`, `law_a
 -- --------------------------------------------------------
 
 --
+-- Estrutura da tabela `tb_legal_person`
+--
+
+CREATE TABLE `tb_legal_person` (
+  `id` int(11) NOT NULL,
+  `company_name` varchar(200) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `cnpj` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `phone` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `email` varchar(200) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `password` varchar(500) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `address` varchar(250) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `status` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT 'registred' COMMENT 'registred, confirmed',
+  `level` int(11) NOT NULL,
+  `last_login` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `tb_level_user`
+--
+
+CREATE TABLE `tb_level_user` (
+  `id` int(11) NOT NULL,
+  `level` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Extraindo dados da tabela `tb_level_user`
+--
+
+INSERT INTO `tb_level_user` (`id`, `level`, `created_at`) VALUES
+(1, 'admin', '2020-06-05 11:46:00'),
+(2, 'news', '2020-06-05 11:46:00'),
+(3, 'bidding', '2020-06-05 11:46:00'),
+(4, 'council', '2020-06-12 17:12:02'),
+(5, 'public', '2020-06-12 17:12:02');
+
+-- --------------------------------------------------------
+
+--
 -- Estrutura da tabela `tb_log_attempt`
 --
 
@@ -345,6 +439,7 @@ CREATE TABLE `tb_news` (
   `title` varchar(250) NOT NULL,
   `news` text CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `uri` varchar(250) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `date_pub` date NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `deleted_at` timestamp NULL DEFAULT NULL,
@@ -357,9 +452,9 @@ CREATE TABLE `tb_news` (
 -- Extraindo dados da tabela `tb_news`
 --
 
-INSERT INTO `tb_news` (`id`, `title`, `news`, `uri`, `created_at`, `deleted_at`, `views`, `category`, `status`) VALUES
-(3, 'Prefeitura investe em educação', 'Educação na 3 idade', 'prefeitura-investe-em-educacao', '2020-03-31 12:55:21', NULL, 80, 1, 'draft'),
-(4, 'Nova escola técnica ', 'Compra de servidor web dshjfhdhghdgjdfhgjdhfg Compra de servidor web dshjfhdhghdgjdfhgjdhfg Compra de servidor web dshjfhdhghdgjdfhgjdhfg Compra de servidor web dshjfhdhghdgjdfhgjdhfg Compra de servidor web dshjfhdhghdgjdfhgjdhfg Compra de servidor web dshjfhdhghdgjdfhgjdhfg Compra de servidor web dshjfhdhghdgjdfhgjdhfg Compra de servidor web dshjfhdhghdgjdfhgjdhfg Compra de servidor web dshjfhdhghdgjdfhgjdhfg Compra de servidor web dshjfhdhghdgjdfhgjdhfg Compra de servidor web dshjfhdhghdgjdfhgjdhfgCompra de servidor web dshjfhdhghdgjdfhgjdhfgCompra de servidor web dshjfhdhghdgjdfhgjdhfgCompra de servidor web dshjfhdhghdgjdfhgjdhfgCompra de servidor web dshjfhdhghdgjdfhgjdhfgCompra de servidor web dshjfhdhghdgjdfhgjdhfgCompra de servidor web dshjfhdhghdgjdfhgjdhfgCompra de servidor web dshjfhdhghdgjdfhgjdhfg', 'nova-escola-tecnica ', '2020-02-17 12:55:21', NULL, 727, 2, 'draft');
+INSERT INTO `tb_news` (`id`, `title`, `news`, `uri`, `date_pub`, `created_at`, `deleted_at`, `views`, `category`, `status`) VALUES
+(3, 'Prefeitura investe em educação', 'Educação na 3 idade', 'prefeitura-investe-em-educacao', '2020-05-18', '2020-03-31 12:55:21', NULL, 83, 1, 'draft'),
+(4, 'Nova escola técnica ', 'Compra de servidor web dshjfhdhghdgjdfhgjdhfg Compra de servidor web dshjfhdhghdgjdfhgjdhfg Compra de servidor web dshjfhdhghdgjdfhgjdhfg Compra de servidor web dshjfhdhghdgjdfhgjdhfg Compra de servidor web dshjfhdhghdgjdfhgjdhfg Compra de servidor web dshjfhdhghdgjdfhgjdhfg Compra de servidor web dshjfhdhghdgjdfhgjdhfg Compra de servidor web dshjfhdhghdgjdfhgjdhfg Compra de servidor web dshjfhdhghdgjdfhgjdhfg Compra de servidor web dshjfhdhghdgjdfhgjdhfg Compra de servidor web dshjfhdhghdgjdfhgjdhfgCompra de servidor web dshjfhdhghdgjdfhgjdhfgCompra de servidor web dshjfhdhghdgjdfhgjdhfgCompra de servidor web dshjfhdhghdgjdfhgjdhfgCompra de servidor web dshjfhdhghdgjdfhgjdhfgCompra de servidor web dshjfhdhghdgjdfhgjdhfgCompra de servidor web dshjfhdhghdgjdfhgjdhfgCompra de servidor web dshjfhdhghdgjdfhgjdhfg', 'nova-escola-tecnica ', '2020-05-01', '2020-02-17 12:55:21', NULL, 736, 2, 'draft');
 
 -- --------------------------------------------------------
 
@@ -439,6 +534,35 @@ INSERT INTO `tb_ordinance` (`id`, `number_ordinance`, `ordinance`, `ordinance_at
 -- --------------------------------------------------------
 
 --
+-- Estrutura da tabela `tb_physical_person`
+--
+
+CREATE TABLE `tb_physical_person` (
+  `id` int(11) NOT NULL,
+  `first_name` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `last_name` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `cpf` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
+  `phone` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `email` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `address` varchar(250) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `password` varchar(300) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `level` int(11) DEFAULT NULL,
+  `status` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT 'registered' COMMENT 'registered, confirmed',
+  `last_login` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Extraindo dados da tabela `tb_physical_person`
+--
+
+INSERT INTO `tb_physical_person` (`id`, `first_name`, `last_name`, `cpf`, `phone`, `email`, `address`, `password`, `level`, `status`, `created_at`) VALUES
+(54, 'Welingson', 'Santos', '13643399600', '35984568419', 'welingson12@gmail.com', 'Bairro Anzol, Brazópolis', '$2y$10$q4wUrM58gVw03SIVvewQ5eM7jNPg6eVQjkK0O0la1HIiRUMZ9q6SC', NULL, 'confirmed', '2020-06-15 17:34:28');
+
+-- --------------------------------------------------------
+
+--
 -- Estrutura da tabela `tb_regulation_mark`
 --
 
@@ -486,20 +610,49 @@ INSERT INTO `tb_secretary` (`id`, `secretary`, `description`, `created_at`) VALU
 -- --------------------------------------------------------
 
 --
--- Estrutura da tabela `tb_user`
+-- Estrutura da tabela `tb_user_adm`
 --
 
-CREATE TABLE `tb_user` (
+CREATE TABLE `tb_user_adm` (
+  `id` int(11) NOT NULL,
   `id_user` int(11) NOT NULL,
-  `name_user` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  `email` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  `password` varchar(300) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  `sector` int(11) NOT NULL
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `tb_user_app`
+--
+
+CREATE TABLE `tb_user_app` (
+  `id` int(11) NOT NULL,
+  `first_name` varchar(200) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `last_name` varchar(200) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `email` varchar(200) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `password` varchar(500) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `cpf` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Extraindo dados da tabela `tb_user_app`
+--
+
+INSERT INTO `tb_user_app` (`id`, `first_name`, `last_name`, `email`, `password`, `cpf`, `created_at`) VALUES
+(1, 'Welingson', 'Santos', 'welingson@wetechnologia.com.br', '123456789', '13643399600', '2020-06-05 12:08:57');
 
 --
 -- Índices para tabelas despejadas
 --
+
+--
+-- Índices para tabela `tb_access_ip`
+--
+ALTER TABLE `tb_access_ip`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Índices para tabela `tb_banner`
@@ -537,6 +690,13 @@ ALTER TABLE `tb_category`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Índices para tabela `tb_city_councils`
+--
+ALTER TABLE `tb_city_councils`
+  ADD PRIMARY KEY (`id`);
+ALTER TABLE `tb_city_councils` ADD FULLTEXT KEY `search` (`title`,`description`);
+
+--
 -- Índices para tabela `tb_contact_manager`
 --
 ALTER TABLE `tb_contact_manager`
@@ -571,6 +731,18 @@ ALTER TABLE `tb_laws`
   ADD PRIMARY KEY (`id`),
   ADD KEY `tb_laws_ibfk_1` (`category`);
 ALTER TABLE `tb_laws` ADD FULLTEXT KEY `FULLTEXT` (`law`);
+
+--
+-- Índices para tabela `tb_legal_person`
+--
+ALTER TABLE `tb_legal_person`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Índices para tabela `tb_level_user`
+--
+ALTER TABLE `tb_level_user`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Índices para tabela `tb_log_attempt`
@@ -617,6 +789,14 @@ ALTER TABLE `tb_ordinance`
 ALTER TABLE `tb_ordinance` ADD FULLTEXT KEY `fulltext` (`ordinance`);
 
 --
+-- Índices para tabela `tb_physical_person`
+--
+ALTER TABLE `tb_physical_person`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `password` (`password`),
+  ADD UNIQUE KEY `email` (`email`);
+
+--
 -- Índices para tabela `tb_regulation_mark`
 --
 ALTER TABLE `tb_regulation_mark`
@@ -632,16 +812,26 @@ ALTER TABLE `tb_secretary`
   ADD UNIQUE KEY `name` (`secretary`);
 
 --
--- Índices para tabela `tb_user`
+-- Índices para tabela `tb_user_adm`
 --
-ALTER TABLE `tb_user`
-  ADD PRIMARY KEY (`id_user`),
-  ADD UNIQUE KEY `password` (`password`),
-  ADD UNIQUE KEY `email` (`email`);
+ALTER TABLE `tb_user_adm`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Índices para tabela `tb_user_app`
+--
+ALTER TABLE `tb_user_app`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- AUTO_INCREMENT de tabelas despejadas
 --
+
+--
+-- AUTO_INCREMENT de tabela `tb_access_ip`
+--
+ALTER TABLE `tb_access_ip`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de tabela `tb_banner`
@@ -671,7 +861,13 @@ ALTER TABLE `tb_bidding_status`
 -- AUTO_INCREMENT de tabela `tb_category`
 --
 ALTER TABLE `tb_category`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
+
+--
+-- AUTO_INCREMENT de tabela `tb_city_councils`
+--
+ALTER TABLE `tb_city_councils`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT de tabela `tb_contact_manager`
@@ -702,6 +898,18 @@ ALTER TABLE `tb_interesting_documents`
 --
 ALTER TABLE `tb_laws`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT de tabela `tb_legal_person`
+--
+ALTER TABLE `tb_legal_person`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de tabela `tb_level_user`
+--
+ALTER TABLE `tb_level_user`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT de tabela `tb_log_attempt`
@@ -740,6 +948,12 @@ ALTER TABLE `tb_ordinance`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
+-- AUTO_INCREMENT de tabela `tb_physical_person`
+--
+ALTER TABLE `tb_physical_person`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=55;
+
+--
 -- AUTO_INCREMENT de tabela `tb_regulation_mark`
 --
 ALTER TABLE `tb_regulation_mark`
@@ -752,10 +966,16 @@ ALTER TABLE `tb_secretary`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
--- AUTO_INCREMENT de tabela `tb_user`
+-- AUTO_INCREMENT de tabela `tb_user_adm`
 --
-ALTER TABLE `tb_user`
-  MODIFY `id_user` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+ALTER TABLE `tb_user_adm`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de tabela `tb_user_app`
+--
+ALTER TABLE `tb_user_app`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- Restrições para despejos de tabelas
