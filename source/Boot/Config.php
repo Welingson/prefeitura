@@ -4,7 +4,7 @@
  */
 define("CONF_DB_HOST", "localhost");
 define("CONF_DB_USER", "root");
-define("CONF_DB_PASS", "weds36741298");
+define("CONF_DB_PASS", "************");
 define("CONF_DB_NAME", "db_prefeitura");
 
 /**
@@ -93,7 +93,7 @@ define("CONF_IMAGE_QUALITY", ["jpg" => 75, "png" => 5]);
 define("CONF_MAIL_HOST", "www.wetechnologia.com.br");
 define("CONF_MAIL_PORT", "587");
 define("CONF_MAIL_USER", "welingson@wetechnologia.com.br");
-define("CONF_MAIL_PASS", "weds36741298");
+define("CONF_MAIL_PASS", "************");
 define("CONF_MAIL_SENDER", ["name" => "Welingson E. Santos", "address" => "welingson@wetechnologia.com.br"]);
 define("CONF_MAIL_SUPPORT", "welingson@wetechnologia.com.br");
 define("CONF_MAIL_OPTION_LANG", "br");
